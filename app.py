@@ -1,10 +1,13 @@
 import mysql.connector
 from flask import Flask, request, render_template, redirect, url_for, session
+from datetime import timedelta
 
 
 app = Flask(__name__)
 
 app.secret_key = 'BAD_SECRET_KEY'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
+
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -16,10 +19,9 @@ def get_db_connection():
         collation = "utf8mb4_general_ci"
     )
 
-@app.route("/register")
+
+@app.route("/register", methods = ["GET", "POST"])
 def register():
-    if session["email"]:
-        return "Du er logget inn"
 
     if request.method == "POST":
         email = request.form["email"]
@@ -31,10 +33,11 @@ def register():
 
         cursor.execute("SELECT * FROM customers WHERE email = %s", (email,))
         if cursor.fetchone():
-            return "E-post alredy registered"
+            return "email alredy registered"
 
         cursor.execute(
-            "INSERT INTO customers (email, password, full_name) VALUES (%s, %s, %s)",
+            "INSERT INTO customers (email, password, full_name) "
+            "VALUES (%s, %s, %s)",
             (email, password, full_name)
         )
         db.commit()
@@ -43,6 +46,7 @@ def register():
 
         return redirect(url_for("login"))
     return render_template("register.html")
+
 
 @app.route("/")
 @app.route("/login", methods = ["GET", "POST"])
@@ -54,7 +58,8 @@ def login():
         db = get_db_connection()
         cursor = db.cursor()
 
-        cursor.execute("SELECT * FROM customers WHERE email = %s AND password = %s", (email, password))
+        cursor.execute("SELECT * FROM customers WHERE email = %s "
+                        "AND password = %s", (email, password))
         user = cursor.fetchone()
 
         cursor.close()
