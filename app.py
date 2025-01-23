@@ -1,8 +1,10 @@
 import mysql.connector
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, session
 
 
 app = Flask(__name__)
+
+app.secret_key = 'BAD_SECRET_KEY'
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -14,7 +16,11 @@ def get_db_connection():
         collation = "utf8mb4_general_ci"
     )
 
+@app.route("/register")
 def register():
+    if session["email"]:
+        return "Du er logget inn"
+
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
@@ -38,7 +44,7 @@ def register():
         return redirect(url_for("login"))
     return render_template("register.html")
 
-
+@app.route("/")
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -55,11 +61,14 @@ def login():
         db.close()
 
         if user:
+            session["email"] = email
             return "Welkome back"
         else:
+            session["email"] = email
             return "Wrong e-mail or password"
+    else:
+        return render_template("index.html")
 
-    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
