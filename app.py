@@ -44,7 +44,8 @@ def register():
         cursor.close()
         db.close()
 
-        return redirect(url_for("login"))
+        session["email"] = email
+        return redirect(url_for("store"))
     return render_template("register.html")
 
 
@@ -67,12 +68,24 @@ def login():
 
         if user:
             session["email"] = email
-            return "Welkome back"
+            return redirect(url_for("store"))
         else:
             session["email"] = email
             return "Wrong e-mail or password"
     else:
         return render_template("index.html")
+
+@app.route("/store", methods = ["GET", "POST"])
+def store():
+    if "email" in session:
+        return render_template("store.html")
+    else:
+        return redirect(url_for("login"))
+    
+@app.route("/logout")
+def logout():
+    session.pop("email", None)
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
