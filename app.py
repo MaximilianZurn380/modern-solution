@@ -67,6 +67,7 @@ def login():
         db.close()
 
         if user:
+            session.permanent = True
             session["email"] = email
             return redirect(url_for("store"))
         else:
@@ -84,7 +85,7 @@ def store():
     
 @app.route("/logout")
 def logout():
-    session.pop("email", None)
+    session.clear()
     return redirect(url_for("login"))
 
 
