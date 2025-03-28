@@ -1,0 +1,10 @@
+#topbar {
+    background-color: white;
+    padding: 10px;
+    margin: -10px;
+    margin-top: -8.1px;
+    width: 20rem;
+    box-sizing: border-box;
+    border: 2px solid black;
+    border-radius: 10px;
+}

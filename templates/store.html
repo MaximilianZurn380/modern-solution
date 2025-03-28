@@ -4,9 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Welcome</h1>
     <a href="{{ url_for('logout') }}">Log out</a>
+    <div id="topbar">
+        <div id="mainmenu" style="display: none;">
+
+            <p>Type in a color for the background</p>
+            <input type="text" id="typebox">
+            <button id="choose">Accept</button>
+            <br>
+            <br>
+            <div id="hidemenu" style="display: none;">
+                <p>Choose text type</p>
+                <select id="texttype">
+                    <option value="h1">Title</option>
+                    <option value="h2">Small title</option>
+                    <option value="h3">Smaller title</option>
+                    <option value="p">Paragraph</option>
+                </select>
+                <p>Type in what you want to write</p>
+                <input type="text" id="linetext">
+                <button id="addtext">Add text</button>
+            </div>
+            <br>
+            <button id="togglemenu">Make a new line</button>
+
+            <div id="textmenu" style="display: none;">
+                <br>
+                <div id="colormenu" style="display: none;">
+                    <p>Type in the color for your text</p>
+                    <input type="text" id="textcolor">
+                    <button id="changecolor">Change color</button>
+                </div>
+                <br>
+                <button id="opencolor">Text color</button>
+                <br>
+                
+                <div id="fontmenu" style="display: none;">
+                    <br>
+                    <select id="fontselect">
+                        <option value="Calibri">Calibri</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Verdana">Verdana</option>
+                    </select>
+                    <button id="changefont">Change font</button>
+                </div>
+                <br>
+                <button id="openfont">Font menu</button>
+                <br>
+                <br>
+            </div>
+            <button id="changemenu">Text menu</button>
+            <br>
+        </div>
+        <br>
+        <br>
+        <button id="mainbutton">Open menu</button>
+    </div>
+    <div id="container"></div>
 </body>
 </html>
